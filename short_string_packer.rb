@@ -6,8 +6,12 @@ module ShortStringPacker
   # Arguments:
   #   str - String object
   # Returns: a Integer object
+  OFFSET = 'a'.ord - 1
+  BASE = 27
   def self.pack(str)
-    # IMPLEMENT THIS METHOD
+    str.chars.each_with_index.reduce(0) do |packed, (char, index)|
+      packed + (char.ord - OFFSET) * (BASE**index)
+    end
   end
 
   ## Unpacks a Integer from pack() method into a short string
@@ -15,6 +19,9 @@ module ShortStringPacker
   #   packed - a Integer object
   # Returns: a String object
   def self.unpack(packed)
-    # IMPLEMENT THIS METHOD
+    return '' if packed.zero?
+
+    char = ((packed % BASE) + OFFSET).chr
+    char + unpack(packed / BASE)
   end
 end
